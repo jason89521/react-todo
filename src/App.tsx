@@ -3,6 +3,7 @@ import uniqid from 'uniqid';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
 import ToggleCompleted from './components/ToggleCompleted';
+import RadioGroup from './components/RadioGroup';
 import Radio from './components/Radio';
 
 function App() {
@@ -82,33 +83,17 @@ function App() {
       </ul>
 
       <div className="mt-4 flex justify-center gap-4 rounded-lg bg-white py-3 font-semibold capitalize text-slate-500">
-        <Radio
-          className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`}
-          name="filter"
-          value="all"
-          checked={inputFilter === 'all'}
-          onRadioChange={handleInputFilter}
-        >
-          all
-        </Radio>
-        <Radio
-          className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`}
-          name="filter"
-          value="active"
-          checked={inputFilter === 'active'}
-          onRadioChange={handleInputFilter}
-        >
-          active
-        </Radio>
-        <Radio
-          className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`}
-          name="filter"
-          value="completed"
-          checked={inputFilter === 'completed'}
-          onRadioChange={handleInputFilter}
-        >
-          completed
-        </Radio>
+        <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
+          <Radio className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`} radioValue="all">
+            all
+          </Radio>
+          <Radio className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`} radioValue="active">
+            active
+          </Radio>
+          <Radio className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`} radioValue="completed">
+            completed
+          </Radio>
+        </RadioGroup>
       </div>
 
       <footer className="mt-10 text-center text-slate-400">Drag and drop to reorder list</footer>

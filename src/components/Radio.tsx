@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { RadioContext } from '../contexts';
 
 type Props = {
-  name: string;
-  value: string;
-  checked: boolean;
-  onRadioChange: React.FormEventHandler<HTMLInputElement>;
+  radioValue: string;
 } & React.HTMLProps<HTMLLabelElement>;
 
-const Radio = ({ name, value, checked, onRadioChange, children, ...labelProps }: Props) => {
+const Radio = ({ radioValue, children, ...labelProps }: Props) => {
+  const { name, checkedValue, onChange } = useContext(RadioContext);
   return (
     <label {...labelProps}>
       {children}
-      <input type="radio" className="hidden" name={name} value={value} checked={checked} onChange={onRadioChange} />
+      <input
+        type="radio"
+        className="hidden"
+        name={name}
+        value={radioValue}
+        checked={checkedValue === radioValue}
+        onChange={onChange}
+      />
     </label>
   );
 };
