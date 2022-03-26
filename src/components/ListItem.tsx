@@ -5,9 +5,10 @@ import ToggleCompleted from './ToggleCompleted';
 type Props = {
   data: Todo;
   onClickToggle: React.FormEventHandler;
+  onClickDelete: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const ListItem = ({ data, onClickToggle }: Props) => {
+const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
   const spanClassVariant = data.isCompleted ? 'line-through text-gray-300' : 'text-slate-600';
 
   return (
@@ -20,7 +21,7 @@ const ListItem = ({ data, onClickToggle }: Props) => {
         {data.title}
       </span>
 
-      <button className="h-3 w-3">
+      <button className="h-3 w-3" onClick={onClickDelete}>
         <img src={iconCross} alt="delete task" />
       </button>
     </li>

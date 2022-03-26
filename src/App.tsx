@@ -24,12 +24,19 @@ function App() {
   const handleClickToggle: (id: string) => React.FormEventHandler<HTMLInputElement> = id => {
     return e => {
       const checked = e.currentTarget.checked;
-      const newTodos = todos.map(todo => {
+      const nextTodos = todos.map(todo => {
         if (todo.id === id) return { ...todo, isCompleted: checked };
 
         return todo;
       });
-      setTodos(newTodos);
+      setTodos(nextTodos);
+    };
+  };
+
+  const handleClickDelete: (id: string) => React.MouseEventHandler<HTMLButtonElement> = id => {
+    return () => {
+      const nextTodos = todos.filter(todo => todo.id !== id);
+      setTodos(nextTodos);
     };
   };
 
@@ -56,7 +63,14 @@ function App() {
 
       <ul className="overflow-hidden rounded-lg bg-white shadow-xl">
         {displayTodos.map(todo => {
-          return <ListItem key={todo.id} data={todo} onClickToggle={handleClickToggle(todo.id)} />;
+          return (
+            <ListItem
+              key={todo.id}
+              data={todo}
+              onClickToggle={handleClickToggle(todo.id)}
+              onClickDelete={handleClickDelete(todo.id)}
+            />
+          );
         })}
 
         <li className="flex justify-between px-4 py-3 text-xs text-slate-400">
