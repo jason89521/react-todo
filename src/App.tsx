@@ -47,57 +47,62 @@ function App() {
   const clearComplete = () => setTodos(activeTodos);
 
   return (
-    <div className="min-h-screen bg-gray-100 bg-mobile-light bg-contain bg-no-repeat py-12 px-6">
-      <Header />
+    <div className="min-h-screen bg-gray-100 bg-mobile-light bg-contain bg-no-repeat sm:bg-desktop-light">
+      <div className="py-12 px-6 md:mx-auto md:w-[40rem] md:px-0 md:pt-16 lg:pt-20">
+        <Header />
 
-      <form className="mt-6 mb-4 flex items-center rounded-lg bg-white px-4 py-3" onSubmit={handleSubmit}>
-        <ToggleCompleted isCompleted={inputChecked} onClick={e => setInputChecked(e.currentTarget.checked)} />
-        <input
-          className="mt-1 ml-4 flex-1 text-sm outline-none"
-          placeholder="Create a new todos..."
-          required
-          pattern="[^\s]+(\s+[^\s]+)*"
-          value={inputTitle}
-          onChange={e => setInputTitle(e.currentTarget.value)}
-        />
-      </form>
+        <form
+          className="mt-6 mb-4 flex items-center rounded-md bg-white px-4 py-3 lg:mt-12 lg:mb-6 lg:px-6 lg:py-4"
+          onSubmit={handleSubmit}
+        >
+          <ToggleCompleted isCompleted={inputChecked} onClick={e => setInputChecked(e.currentTarget.checked)} />
+          <input
+            className="mt-1 ml-4 flex-1 text-sm outline-none md:text-base"
+            placeholder="Create a new todos..."
+            required
+            pattern="[^\s]+(\s+[^\s]+)*"
+            value={inputTitle}
+            onChange={e => setInputTitle(e.currentTarget.value)}
+          />
+        </form>
 
-      <ul className="rounded-lg bg-white shadow-xl">
-        {displayTodos.map(todo => {
-          return (
-            <ListItem
-              key={todo.id}
-              data={todo}
-              onClickToggle={handleClickToggle(todo.id)}
-              onClickDelete={handleClickDelete(todo.id)}
-            />
-          );
-        })}
+        <ul className="rounded-md bg-white shadow-xl">
+          {displayTodos.map(todo => {
+            return (
+              <ListItem
+                key={todo.id}
+                data={todo}
+                onClickToggle={handleClickToggle(todo.id)}
+                onClickDelete={handleClickDelete(todo.id)}
+              />
+            );
+          })}
 
-        <li className="relative flex justify-between px-4 py-3 text-xs text-slate-400">
-          <span>
-            {activeTodos.length} item{activeTodos.length > 1 && 's'} left
-          </span>
+          <li className="relative flex items-center justify-between px-4 py-3 text-xs text-slate-400 sm:text-sm">
+            <span>
+              {activeTodos.length} item{activeTodos.length > 1 && 's'} left
+            </span>
 
-          <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-lg bg-white py-3 font-semibold capitalize text-slate-500">
-            <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
-              <Radio className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`} radioValue="all">
-                all
-              </Radio>
-              <Radio className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`} radioValue="active">
-                active
-              </Radio>
-              <Radio className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`} radioValue="completed">
-                completed
-              </Radio>
-            </RadioGroup>
-          </div>
+            <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-md bg-white py-3 font-semibold capitalize text-slate-500 sm:static sm:w-auto sm:p-0">
+              <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
+                <Radio className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`} radioValue="all">
+                  all
+                </Radio>
+                <Radio className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`} radioValue="active">
+                  active
+                </Radio>
+                <Radio className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`} radioValue="completed">
+                  completed
+                </Radio>
+              </RadioGroup>
+            </div>
 
-          <button onClick={clearComplete}>Clear Completed</button>
-        </li>
-      </ul>
+            <button onClick={clearComplete}>Clear Completed</button>
+          </li>
+        </ul>
 
-      <footer className="mt-20 text-center text-slate-400">Drag and drop to reorder list</footer>
+        <footer className="mt-20 text-center text-slate-400 sm:mt-10">Drag and drop to reorder list</footer>
+      </div>
     </div>
   );
 }
