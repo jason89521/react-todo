@@ -66,6 +66,8 @@ function App() {
   const handleInputFilter: React.FormEventHandler<HTMLInputElement> = event =>
     setInputFilter(event.currentTarget.value);
 
+  const clearComplete = () => setTodos(activeTodos);
+
   return (
     <div className="min-h-screen bg-gray-100 bg-mobile-light bg-contain bg-no-repeat py-12 px-6">
       <Header />
@@ -89,7 +91,7 @@ function App() {
           <span>
             {activeTodos.length} item{activeTodos.length > 1 && 's'} left
           </span>
-          <button>Clear Completed</button>
+          <button onClick={clearComplete}>Clear Completed</button>
         </li>
       </ul>
 
