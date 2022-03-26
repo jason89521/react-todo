@@ -9,14 +9,17 @@ type Props = {
 };
 
 const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
-  const spanClassVariant = data.isCompleted ? 'line-through text-gray-300' : 'text-slate-600';
+  const spanClassVariant = data.isCompleted ? 'line-through text-gray-300 dark:text-gray-500' : 'text-slate-600';
 
   return (
-    <li className="flex items-center gap-4 border-b border-b-gray-300 px-4 py-3 lg:px-6 lg:py-4" draggable>
+    <li
+      className="flex cursor-pointer items-center gap-4 border-b border-b-gray-300 px-4 py-3 lg:px-6 lg:py-4"
+      draggable
+    >
       <ToggleCompleted isCompleted={data.isCompleted} onClick={onClickToggle} />
 
       <span
-        className={`${spanClassVariant} mt-1 flex-1 overflow-hidden overflow-ellipsis whitespace-pre text-sm font-bold transition-all duration-300 md:text-base`}
+        className={`${spanClassVariant} mt-1 flex-1 overflow-hidden overflow-ellipsis whitespace-pre text-sm transition-all duration-300 dark:text-gray-100 md:text-base lg:font-medium`}
       >
         {data.title}
       </span>
