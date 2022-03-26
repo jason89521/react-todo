@@ -1,77 +1,72 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
-import useForm from './components/useForm';
-import type { Error, Validate, OnValidationPass } from './components/useForm';
 
 const defaultTodos = [
   {
+    id: 1,
     isCompleted: true,
     title: 'Create a new todos...',
   },
   {
+    id: 2,
     isCompleted: false,
     title: 'Create a new todos',
   },
   {
+    id: 3,
     isCompleted: false,
     title: 'Create a new todos',
   },
   {
+    id: 4,
     isCompleted: false,
     title: 'Create a new todos',
   },
   {
+    id: 5,
     isCompleted: false,
     title: 'Create a new todos',
   },
   {
+    id: 6,
     isCompleted: false,
     title: 'Create a new todos asd fasfg sdgdf gdfgerh dfghdfgadad asd',
   },
 ];
 
-type Input = {
-  title: string;
-};
-
-const validate: Validate<Input> = data => {
-  const error: Error<Input> = {};
-  const regex = /^\S(.*\S)?$/;
-
-  if (!regex.test(data.title)) {
-    error.title = 'title should not be empty string, or has whitespace at the both ends.';
-  }
-
-  return error;
-};
-
 function App() {
   const [todos, setTodos] = useState<Todo[]>(defaultTodos);
-  const { onFormSubmit, register, formState } = useForm<Input>(validate, { title: '' });
-
-  const onPass: OnValidationPass<Input> = data => {
-    setTodos([...todos, { title: data.title, isCompleted: false }]);
-  };
 
   const uncompletedTodos = todos.filter(todo => !todo.isCompleted);
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+    event.preventDefault();
+  };
+
+  const handleClickToggle: (id: number) => React.MouseEventHandler = id => {
+    return () => {
+      const newTodos = todos.map(todo => {
+        if (todo.id === id) return { ...todo, isCompleted: !todo.isCompleted };
+
+        return todo;
+      });
+      setTodos(newTodos);
+    };
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 bg-mobile-light bg-contain bg-no-repeat py-12 px-6">
       <Header />
-      {formState.error.title}
-      <form className="mt-6 mb-4 flex items-center rounded-lg bg-white px-4 py-3" onSubmit={onFormSubmit(onPass)}>
+
+      <form className="mt-6 mb-4 flex items-center rounded-lg bg-white px-4 py-3" onSubmit={handleSubmit}>
         <button className="h-5 w-5 rounded-full border border-gray-300"></button>
-        <input
-          className="mt-1 ml-4 flex-1 text-sm outline-none"
-          placeholder="Create a new todos..."
-          {...register('title')}
-        />
+        <input className="mt-1 ml-4 flex-1 text-sm outline-none" placeholder="Create a new todos..." />
       </form>
 
       <ul className="overflow-hidden rounded-lg bg-white shadow-xl">
-        {todos.map((todo, index) => {
-          return <ListItem key={index} data={todo} />;
+        {todos.map(todo => {
+          return <ListItem key={todo.id} data={todo} onClickToggle={handleClickToggle(todo.id)} />;
         })}
 
         <li className="flex justify-between px-4 py-3 text-xs text-slate-400">
