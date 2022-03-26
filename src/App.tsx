@@ -1,44 +1,12 @@
 import React, { useState } from 'react';
+import uniqid from 'uniqid';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
 import ToggleCompleted from './components/ToggleCompleted';
 import Radio from './components/Radio';
 
-const defaultTodos: Todo[] = [
-  {
-    id: 1,
-    isCompleted: true,
-    title: 'Create a new todos...',
-  },
-  {
-    id: 2,
-    isCompleted: false,
-    title: 'Create a new todos',
-  },
-  {
-    id: 3,
-    isCompleted: false,
-    title: 'Create a new todos',
-  },
-  {
-    id: 4,
-    isCompleted: false,
-    title: 'Create a new todos',
-  },
-  {
-    id: 5,
-    isCompleted: false,
-    title: 'Create a new todos',
-  },
-  {
-    id: 6,
-    isCompleted: false,
-    title: 'Create a new todos asd fasfg sdgdf gdfgerh dfghdfgadad asd',
-  },
-];
-
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(defaultTodos);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [inputTitle, setInputTitle] = useState('');
   const [inputChecked, setInputChecked] = useState(false);
   const [inputFilter, setInputFilter] = useState('all');
@@ -49,9 +17,11 @@ function App() {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
+    const newTodo: Todo = { id: uniqid(), title: inputTitle, isCompleted: inputChecked };
+    setTodos([...todos, newTodo]);
   };
 
-  const handleClickToggle: (id: number) => React.FormEventHandler<HTMLInputElement> = id => {
+  const handleClickToggle: (id: string) => React.FormEventHandler<HTMLInputElement> = id => {
     return e => {
       const checked = e.currentTarget.checked;
       const newTodos = todos.map(todo => {
@@ -77,6 +47,8 @@ function App() {
         <input
           className="mt-1 ml-4 flex-1 text-sm outline-none"
           placeholder="Create a new todos..."
+          required
+          pattern="[^\s]+(\s+[^\s]+)*"
           value={inputTitle}
           onChange={e => setInputTitle(e.currentTarget.value)}
         />

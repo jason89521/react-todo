@@ -1,3 +1,4 @@
+import React from 'react';
 import iconMoon from '../images/icon-moon.svg';
 
 const Header = () => {
