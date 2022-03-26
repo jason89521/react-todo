@@ -5,6 +5,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      colors: {
+        'dark-blue': 'hsl(235, 24%, 19%)',
+      },
       fontFamily: {
         sans: ['Josefin Sans', ...defaultTheme.fontFamily.sans],
       },

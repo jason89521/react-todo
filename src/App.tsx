@@ -52,12 +52,12 @@ function App() {
         <Header />
 
         <form
-          className="mt-6 mb-4 flex items-center rounded-md bg-white px-4 py-3 dark:bg-gray-700 lg:mt-12 lg:mb-6 lg:px-6 lg:py-4"
+          className="mt-6 mb-4 flex items-center rounded-md bg-white px-4 py-3 dark:bg-dark-blue lg:mt-12 lg:mb-6 lg:px-6 lg:py-4"
           onSubmit={handleSubmit}
         >
           <ToggleCompleted isCompleted={inputChecked} onClick={e => setInputChecked(e.currentTarget.checked)} />
           <input
-            className="mt-1 ml-4 flex-1 text-sm outline-none dark:bg-gray-700 dark:text-gray-300 md:text-base"
+            className="mt-1 ml-4 flex-1 text-sm outline-none dark:bg-dark-blue dark:text-gray-300 md:text-base"
             placeholder="Create a new todos..."
             required
             pattern="[^\s]+(\s+[^\s]+)*"
@@ -66,7 +66,7 @@ function App() {
           />
         </form>
 
-        <ul className="rounded-md bg-white shadow-xl dark:bg-gray-700">
+        <ul className="rounded-md bg-white shadow-xl dark:bg-dark-blue">
           {displayTodos.map(todo => {
             return (
               <ListItem
@@ -83,7 +83,7 @@ function App() {
               {activeTodos.length} item{activeTodos.length > 1 && 's'} left
             </span>
 
-            <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-md bg-white py-3 font-semibold capitalize dark:bg-gray-700 sm:static sm:w-auto sm:p-0">
+            <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-md bg-white py-3 font-semibold capitalize dark:bg-dark-blue sm:static sm:w-auto sm:p-0">
               <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
                 <Radio
                   className={`${inputFilter === 'all' ? 'text-sky-600 dark:text-blue-500' : ''} hover:text-white`}

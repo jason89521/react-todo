@@ -13,7 +13,7 @@ const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
 
   return (
     <li
-      className="flex cursor-pointer items-center gap-4 border-b border-b-gray-300 px-4 py-3 lg:px-6 lg:py-4"
+      className="group flex items-center gap-4 border-b border-b-gray-300 px-4 py-3 dark:border-b-gray-500 lg:px-6 lg:py-4"
       draggable
     >
       <ToggleCompleted isCompleted={data.isCompleted} onClick={onClickToggle} />
@@ -24,8 +24,8 @@ const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
         {data.title}
       </span>
 
-      <button className="h-3 w-3" onClick={onClickDelete}>
-        <img src={iconCross} alt="delete task" />
+      <button className="h-3 w-3 lg:h-full lg:w-auto" onClick={onClickDelete}>
+        <img className="hidden group-hover:block" src={iconCross} alt="delete task" />
       </button>
     </li>
   );
