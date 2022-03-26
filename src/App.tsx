@@ -86,19 +86,25 @@ function App() {
             <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-md bg-white py-3 font-semibold capitalize dark:bg-dark-blue sm:static sm:w-auto sm:p-0">
               <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
                 <Radio
-                  className={`${inputFilter === 'all' ? 'text-sky-600 dark:text-blue-500' : ''} hover:text-white`}
+                  className={`${
+                    inputFilter === 'all' ? 'text-sky-600 dark:text-blue-500' : ''
+                  } hover:text-black dark:hover:text-white`}
                   radioValue="all"
                 >
                   all
                 </Radio>
                 <Radio
-                  className={`${inputFilter === 'active' ? 'text-sky-600 dark:text-blue-500' : ''} hover:text-white`}
+                  className={`${
+                    inputFilter === 'active' ? 'text-sky-600 dark:text-blue-500' : ''
+                  } hover:text-black dark:hover:text-white`}
                   radioValue="active"
                 >
                   active
                 </Radio>
                 <Radio
-                  className={`${inputFilter === 'completed' ? 'text-sky-600 dark:text-blue-500' : ''} hover:text-white`}
+                  className={`${
+                    inputFilter === 'completed' ? 'text-sky-600 dark:text-blue-500' : ''
+                  } hover:text-black dark:hover:text-white`}
                   radioValue="completed"
                 >
                   completed
@@ -106,7 +112,7 @@ function App() {
               </RadioGroup>
             </div>
 
-            <button className="hover:text-white" onClick={clearComplete}>
+            <button className="hover:text-black dark:hover:text-white" onClick={clearComplete}>
               Clear Completed
             </button>
           </li>

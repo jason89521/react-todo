@@ -9,7 +9,9 @@ type Props = {
 };
 
 const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
-  const spanClassVariant = data.isCompleted ? 'line-through text-gray-300 dark:text-gray-500' : 'text-slate-600';
+  const spanClassVariant = data.isCompleted
+    ? 'line-through text-gray-300 dark:text-gray-500'
+    : 'dark:text-gray-100 text-slate-600';
 
   return (
     <li
@@ -19,13 +21,13 @@ const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
       <ToggleCompleted isCompleted={data.isCompleted} onClick={onClickToggle} />
 
       <span
-        className={`${spanClassVariant} mt-1 flex-1 overflow-hidden overflow-ellipsis whitespace-pre text-sm transition-all duration-300 dark:text-gray-100 md:text-base lg:font-medium`}
+        className={`${spanClassVariant} mt-1 flex-1 overflow-hidden overflow-ellipsis whitespace-pre text-sm transition-all duration-300 md:text-base lg:font-medium`}
       >
         {data.title}
       </span>
 
-      <button className="h-3 w-3 lg:h-full lg:w-auto" onClick={onClickDelete}>
-        <img className="hidden group-hover:block" src={iconCross} alt="delete task" />
+      <button className="h-3 w-3 lg:h-4 lg:w-4" onClick={onClickDelete}>
+        <img className="group-hover:block sm:hidden" src={iconCross} alt="delete task" />
       </button>
     </li>
   );
