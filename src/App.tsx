@@ -45,6 +45,7 @@ function App() {
 
   const completedTodos = todos.filter(todo => todo.isCompleted);
   const activeTodos = todos.filter(todo => !todo.isCompleted);
+  const displayTodos = inputFilter === 'all' ? todos : inputFilter === 'active' ? activeTodos : completedTodos;
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
@@ -80,7 +81,7 @@ function App() {
       </form>
 
       <ul className="overflow-hidden rounded-lg bg-white shadow-xl">
-        {todos.map(todo => {
+        {displayTodos.map(todo => {
           return <ListItem key={todo.id} data={todo} onClickToggle={handleClickToggle(todo.id)} />;
         })}
 
