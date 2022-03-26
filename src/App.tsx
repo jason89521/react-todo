@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
+import ToggleCompleted from './components/ToggleCompleted';
 
-const defaultTodos = [
+const defaultTodos: Todo[] = [
   {
     id: 1,
     isCompleted: true,
@@ -37,17 +38,20 @@ const defaultTodos = [
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>(defaultTodos);
+  const [inputChecked, setInputChecked] = useState(false);
 
   const uncompletedTodos = todos.filter(todo => !todo.isCompleted);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
+    console.log('submit');
   };
 
-  const handleClickToggle: (id: number) => React.MouseEventHandler = id => {
-    return () => {
+  const handleClickToggle: (id: number) => React.FormEventHandler<HTMLInputElement> = id => {
+    return e => {
+      const checked = e.currentTarget.checked;
       const newTodos = todos.map(todo => {
-        if (todo.id === id) return { ...todo, isCompleted: !todo.isCompleted };
+        if (todo.id === id) return { ...todo, isCompleted: checked };
 
         return todo;
       });
@@ -60,7 +64,8 @@ function App() {
       <Header />
 
       <form className="mt-6 mb-4 flex items-center rounded-lg bg-white px-4 py-3" onSubmit={handleSubmit}>
-        <button className="h-5 w-5 rounded-full border border-gray-300"></button>
+        {/* <button className="h-5 w-5 rounded-full border border-gray-300"></button> */}
+        <ToggleCompleted isCompleted={inputChecked} onClick={e => setInputChecked(e.currentTarget.checked)} />
         <input className="mt-1 ml-4 flex-1 text-sm outline-none" placeholder="Create a new todos..." />
       </form>
 

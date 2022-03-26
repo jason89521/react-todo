@@ -4,7 +4,7 @@ import ToggleCompleted from './ToggleCompleted';
 
 type Props = {
   data: Todo;
-  onClickToggle: React.MouseEventHandler;
+  onClickToggle: React.FormEventHandler;
 };
 
 const ListItem = ({ data, onClickToggle }: Props) => {

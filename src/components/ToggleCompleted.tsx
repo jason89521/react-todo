@@ -4,7 +4,7 @@ import iconCheck from '../images/icon-check.svg';
 
 type Props = {
   isCompleted: boolean;
-  onClick: React.MouseEventHandler;
+  onClick: React.FormEventHandler<HTMLInputElement>;
 };
 
 const ToggleCompleted = ({ isCompleted, onClick }: Props) => {
@@ -13,9 +13,10 @@ const ToggleCompleted = ({ isCompleted, onClick }: Props) => {
     : 'border border-gray-300';
 
   return (
-    <button className={`${classVariant} flex h-5 w-5 items-center justify-center rounded-full`} onClick={onClick}>
+    <label className={`${classVariant} flex h-5 w-5 cursor-pointer items-center justify-center rounded-full`}>
       {isCompleted && <img src={iconCheck} alt="check" />}
-    </button>
+      <input type="checkbox" checked={isCompleted} className="hidden" onChange={onClick} />
+    </label>
   );
 };
 
