@@ -12,7 +12,7 @@ const ListItem = ({ data, onClickToggle, onClickDelete }: Props) => {
   const spanClassVariant = data.isCompleted ? 'line-through text-gray-300' : 'text-slate-600';
 
   return (
-    <li className="flex items-center gap-4 border-b border-b-gray-300 bg-white px-4 py-3" draggable>
+    <li className="flex items-center gap-4 border-b border-b-gray-300 px-4 py-3" draggable>
       <ToggleCompleted isCompleted={data.isCompleted} onClick={onClickToggle} />
 
       <span

@@ -62,7 +62,7 @@ function App() {
         />
       </form>
 
-      <ul className="overflow-hidden rounded-lg bg-white shadow-xl">
+      <ul className="rounded-lg bg-white shadow-xl">
         {displayTodos.map(todo => {
           return (
             <ListItem
@@ -74,29 +74,30 @@ function App() {
           );
         })}
 
-        <li className="flex justify-between px-4 py-3 text-xs text-slate-400">
+        <li className="relative flex justify-between px-4 py-3 text-xs text-slate-400">
           <span>
             {activeTodos.length} item{activeTodos.length > 1 && 's'} left
           </span>
+
+          <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-lg bg-white py-3 font-semibold capitalize text-slate-500">
+            <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
+              <Radio className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`} radioValue="all">
+                all
+              </Radio>
+              <Radio className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`} radioValue="active">
+                active
+              </Radio>
+              <Radio className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`} radioValue="completed">
+                completed
+              </Radio>
+            </RadioGroup>
+          </div>
+
           <button onClick={clearComplete}>Clear Completed</button>
         </li>
       </ul>
 
-      <div className="mt-4 flex justify-center gap-4 rounded-lg bg-white py-3 font-semibold capitalize text-slate-500">
-        <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
-          <Radio className={`${inputFilter === 'all' ? 'text-sky-600' : ''}`} radioValue="all">
-            all
-          </Radio>
-          <Radio className={`${inputFilter === 'active' ? 'text-sky-600' : ''}`} radioValue="active">
-            active
-          </Radio>
-          <Radio className={`${inputFilter === 'completed' ? 'text-sky-600' : ''}`} radioValue="completed">
-            completed
-          </Radio>
-        </RadioGroup>
-      </div>
-
-      <footer className="mt-10 text-center text-slate-400">Drag and drop to reorder list</footer>
+      <footer className="mt-20 text-center text-slate-400">Drag and drop to reorder list</footer>
     </div>
   );
 }
