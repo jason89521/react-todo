@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import uniqid from 'uniqid';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
 import ToggleCompleted from './components/ToggleCompleted';
-import RadioGroup from './components/RadioGroup';
-import Radio from './components/Radio';
+import FilterRow from './components/FilterRow';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputTitle, setInputTitle] = useState('');
   const [inputChecked, setInputChecked] = useState(false);
   const [inputFilter, setInputFilter] = useState('all');
+  const dragStartIndex = useRef(-1);
+  const dragEndIndex = useRef(-1);
 
   const completedTodos = todos.filter(todo => todo.isCompleted);
   const activeTodos = todos.filter(todo => !todo.isCompleted);
@@ -22,7 +23,7 @@ function App() {
     setTodos([...todos, newTodo]);
   };
 
-  const handleClickToggle: (id: string) => React.FormEventHandler<HTMLInputElement> = id => {
+  const handleTodoCheck: (id: string) => React.FormEventHandler<HTMLInputElement> = id => {
     return e => {
       const checked = e.currentTarget.checked;
       const nextTodos = todos.map(todo => {
@@ -34,17 +35,47 @@ function App() {
     };
   };
 
-  const handleClickDelete: (id: string) => React.MouseEventHandler<HTMLButtonElement> = id => {
+  const handleTodoDelete: (id: string) => React.MouseEventHandler<HTMLButtonElement> = id => {
     return () => {
       const nextTodos = todos.filter(todo => todo.id !== id);
       setTodos(nextTodos);
     };
   };
 
-  const handleInputFilter: React.FormEventHandler<HTMLInputElement> = event =>
-    setInputFilter(event.currentTarget.value);
+  const handleInputFilter = (event: React.FormEvent<HTMLInputElement>) => setInputFilter(event.currentTarget.value);
 
-  const clearComplete = () => setTodos(activeTodos);
+  const handleDragStart = (index: number) => () => (dragStartIndex.current = index);
+  const handleDragEnter = (index: number) => () => (dragEndIndex.current = index);
+  const handleDragEnd = () => {
+    const draggedIndex = dragStartIndex.current;
+    const droppedIndex = dragEndIndex.current;
+    // if the `dragenter` event doesn't be triggered
+    if (droppedIndex === -1) return;
+
+    const draggedItem = displayTodos[draggedIndex];
+    const reorderedTodos = [...displayTodos];
+    // delete the item at draggedIndex
+    reorderedTodos.splice(draggedIndex, 1);
+    // insert the dragged item at droppedIndex
+    reorderedTodos.splice(droppedIndex, 0, draggedItem);
+
+    const getMergedTodos = (condition: (_todo: Todo) => boolean) => {
+      let count = -1;
+      const nextTodos = todos.map(_todo => {
+        if (condition(_todo)) {
+          count += 1;
+          return reorderedTodos[count];
+        }
+        return _todo;
+      });
+      return nextTodos;
+    };
+
+    if (inputFilter === 'active') setTodos(getMergedTodos(todo => !todo.isCompleted));
+    else if (inputFilter === 'completed') setTodos(getMergedTodos(todo => todo.isCompleted));
+    else setTodos(reorderedTodos);
+    dragEndIndex.current = -1;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 bg-mobile-light bg-contain bg-no-repeat dark:bg-gray-900 dark:bg-mobile-dark sm:bg-desktop-light dark:sm:bg-desktop-dark">
@@ -67,13 +98,16 @@ function App() {
         </form>
 
         <ul className="rounded-md bg-white shadow-xl dark:bg-dark-blue">
-          {displayTodos.map(todo => {
+          {displayTodos.map((todo, index) => {
             return (
               <ListItem
                 key={todo.id}
                 data={todo}
-                onClickToggle={handleClickToggle(todo.id)}
-                onClickDelete={handleClickDelete(todo.id)}
+                onClickToggle={handleTodoCheck(todo.id)}
+                onClickDelete={handleTodoDelete(todo.id)}
+                onDragStart={handleDragStart(index)}
+                onDragEnter={handleDragEnter(index)}
+                onDragEnd={handleDragEnd}
               />
             );
           })}
@@ -84,35 +118,10 @@ function App() {
             </span>
 
             <div className="absolute left-0 top-14 flex w-full justify-center gap-4 rounded-md bg-white py-3 font-semibold capitalize dark:bg-dark-blue sm:static sm:w-auto sm:p-0">
-              <RadioGroup name="filter" checkedValue={inputFilter} onChange={handleInputFilter}>
-                <Radio
-                  className={`${
-                    inputFilter === 'all' ? 'text-sky-600 dark:text-blue-500' : ''
-                  } hover:text-black dark:hover:text-white`}
-                  radioValue="all"
-                >
-                  all
-                </Radio>
-                <Radio
-                  className={`${
-                    inputFilter === 'active' ? 'text-sky-600 dark:text-blue-500' : ''
-                  } hover:text-black dark:hover:text-white`}
-                  radioValue="active"
-                >
-                  active
-                </Radio>
-                <Radio
-                  className={`${
-                    inputFilter === 'completed' ? 'text-sky-600 dark:text-blue-500' : ''
-                  } hover:text-black dark:hover:text-white`}
-                  radioValue="completed"
-                >
-                  completed
-                </Radio>
-              </RadioGroup>
+              <FilterRow checkedValue={inputFilter} onChange={handleInputFilter} />
             </div>
 
-            <button className="hover:text-black dark:hover:text-white" onClick={clearComplete}>
+            <button className="hover:text-black dark:hover:text-white" onClick={() => setTodos(activeTodos)}>
               Clear Completed
             </button>
           </li>

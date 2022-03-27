@@ -3,7 +3,7 @@ import { RadioContext } from '../contexts';
 
 type Props = {
   radioValue: string;
-} & React.HTMLProps<HTMLLabelElement>;
+} & React.ComponentPropsWithoutRef<'label'>;
 
 const Radio = ({ radioValue, children, ...labelProps }: Props) => {
   const { name, checkedValue, onChange } = useContext(RadioContext);
