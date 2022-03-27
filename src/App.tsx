@@ -4,12 +4,15 @@ import Header from './components/Header';
 import ListItem from './components/ListItem';
 import ToggleCompleted from './components/ToggleCompleted';
 import FilterRow from './components/FilterRow';
+import { removeInsert, mapToSorted } from './utils/array';
+
+type Filter = 'all' | 'active' | 'completed';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputTitle, setInputTitle] = useState('');
   const [inputChecked, setInputChecked] = useState(false);
-  const [inputFilter, setInputFilter] = useState('all');
+  const [inputFilter, setInputFilter] = useState<Filter>('all');
   const dragStartIndex = useRef(-1);
   const dragEndIndex = useRef(-1);
 
@@ -22,6 +25,9 @@ function App() {
     const newTodo: Todo = { id: uniqid(), title: inputTitle, isCompleted: inputChecked };
     setTodos([...todos, newTodo]);
   };
+
+  const handleInputFilter = (event: React.FormEvent<HTMLInputElement>) =>
+    setInputFilter(event.currentTarget.value as Filter);
 
   const handleTodoCheck: (id: string) => React.FormEventHandler<HTMLInputElement> = id => {
     return e => {
@@ -42,8 +48,6 @@ function App() {
     };
   };
 
-  const handleInputFilter = (event: React.FormEvent<HTMLInputElement>) => setInputFilter(event.currentTarget.value);
-
   const handleDragStart = (index: number) => () => (dragStartIndex.current = index);
   const handleDragEnter = (index: number) => () => (dragEndIndex.current = index);
   const handleDragEnd = () => {
@@ -52,27 +56,10 @@ function App() {
     // if the `dragenter` event doesn't be triggered
     if (droppedIndex === -1) return;
 
-    const draggedItem = displayTodos[draggedIndex];
-    const reorderedTodos = [...displayTodos];
-    // delete the item at draggedIndex
-    reorderedTodos.splice(draggedIndex, 1);
-    // insert the dragged item at droppedIndex
-    reorderedTodos.splice(droppedIndex, 0, draggedItem);
+    const reorderedTodos = removeInsert(draggedIndex, droppedIndex, displayTodos);
 
-    const getMergedTodos = (condition: (_todo: Todo) => boolean) => {
-      let count = -1;
-      const nextTodos = todos.map(_todo => {
-        if (condition(_todo)) {
-          count += 1;
-          return reorderedTodos[count];
-        }
-        return _todo;
-      });
-      return nextTodos;
-    };
-
-    if (inputFilter === 'active') setTodos(getMergedTodos(todo => !todo.isCompleted));
-    else if (inputFilter === 'completed') setTodos(getMergedTodos(todo => todo.isCompleted));
+    if (inputFilter === 'active') setTodos(mapToSorted(todos, reorderedTodos, todo => !todo.isCompleted));
+    else if (inputFilter === 'completed') setTodos(mapToSorted(todos, reorderedTodos, todo => todo.isCompleted));
     else setTodos(reorderedTodos);
     dragEndIndex.current = -1;
   };
