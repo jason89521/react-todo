@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import uniqid from 'uniqid';
 import Header from './components/Header';
 import ListItem from './components/ListItem';
@@ -15,6 +15,18 @@ function App() {
   const [inputFilter, setInputFilter] = useState<Filter>('all');
   const dragStartIndex = useRef(-1);
   const dragEndIndex = useRef(-1);
+
+  useEffect(() => {
+    const prevTodosString = localStorage.getItem('todos');
+    if (prevTodosString === null) return;
+
+    const prevTodos = JSON.parse(prevTodosString) as Todo[];
+    setTodos(prevTodos);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const completedTodos = todos.filter(todo => todo.isCompleted);
   const activeTodos = todos.filter(todo => !todo.isCompleted);
@@ -53,8 +65,8 @@ function App() {
   const handleDragEnd = () => {
     const draggedIndex = dragStartIndex.current;
     const droppedIndex = dragEndIndex.current;
-    // if the `dragenter` event doesn't be triggered
-    if (droppedIndex === -1) return;
+    // if the `dragenter` event doesn't be triggered or the two index are the same
+    if (droppedIndex === -1 || dragStartIndex === dragEndIndex) return;
 
     const reorderedTodos = removeInsert(draggedIndex, droppedIndex, displayTodos);
 
