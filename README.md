@@ -17,7 +17,9 @@ I totally agree with this design pattern, so I built this project to practice th
 
 ## Structure
 
-All states about todos are managed by the component in `App.tsx`, including add, delete, remove, filter and the functionality of drag and drop. The other components are used to display the information of the todos, so they do not have their own state.
+All states about todos are managed by the component in `App.tsx`, including add, delete, remove, filter and the functionality of drag and drop. Those components, which are used to display the information of the todos, do not have their own state because what they need to do is just render the todos data onto the screen.
+
+Another component has its own state is `Header` component, which is implemented in `Header.tsx`. It manage the theme of this app.
 
 **This project is not a fullstack project, the data are stored in the local storage**.
 

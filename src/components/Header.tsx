@@ -8,7 +8,18 @@ const Header = () => {
 
   useEffect(() => {
     rootRef.current = document.documentElement;
+    const theme = localStorage.getItem('theme');
+    if (theme === null) return;
+
+    if (theme === 'dark') {
+      rootRef.current.classList.add('dark');
+      setIcon(iconSun);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('theme', icon === iconMoon ? 'light' : 'dark');
+  }, [icon]);
 
   const handleClickTheme = () => {
     const root = rootRef.current;
